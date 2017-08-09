@@ -1,0 +1,22 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/UIElements.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Preferences.cs" Line="12" Column="38" />
+      <File FileName="Assets/Scripts/Brick.cs" Line="67" Column="19" />
+      <File FileName="Assets/Scripts/LevelManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/RandomLevel.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UIElements.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Ball.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LoseCollider.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MusicPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Paddle.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SpecialLoseCollider.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SpecialBrick.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
