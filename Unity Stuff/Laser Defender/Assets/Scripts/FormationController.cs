@@ -9,17 +9,28 @@ public class FormationController : MonoBehaviour {
 	private bool movingRight = true;
 	private float xMinEdge;
 	private float xMaxEdge;
+	private static float yMaxEdge;
+	private static float yMinEdge;
+	private static bool movingUp = true;
+
 
 	float width = 12f;
-	float height = 6f;
+	float height = 10f;
 	float speed = 1f;
 
 	void Start () {
+		if (Settings.hecticMode) {
+			speed = 2.5f;
+		}
 		float distanceToCamera = transform.position.z - Camera.main.transform.position.z; 
 		Vector3 leftEdge = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distanceToCamera));
 		Vector3 rightEdge = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, distanceToCamera));
+		Vector3 topEdge = Camera.main.ViewportToWorldPoint (new Vector3 (0, 1, distanceToCamera));
+		Vector3 bottomEdge = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distanceToCamera));
 		xMaxEdge = rightEdge.x;
 		xMinEdge = leftEdge.x;
+		yMaxEdge = topEdge.y;
+		yMinEdge = bottomEdge.y;
 		SpawnUntilFull ();
 	}
 
@@ -80,10 +91,28 @@ public class FormationController : MonoBehaviour {
 		//controls when the formation swiches directions
 		float leftEdgeofFormation = transform.position.x - (0.46f * width);
 		float rightEdgeofFormation = transform.position.x + (0.46f * width);
+
 		if (leftEdgeofFormation < xMinEdge) {
 			movingRight = true;
 		} else if (rightEdgeofFormation > xMaxEdge) {
 			movingRight = false;
+		}
+
+		if (Settings.hecticMode) {
+			if (movingUp) {
+				transform.position += Vector3.up * speed * Time.deltaTime;
+			} else {
+				transform.position += Vector3.down * speed * Time.deltaTime;
+			}
+
+			float topEdgeofFormation = transform.position.y + (0.46f * height);
+			float bottomEdgeofFormation = transform.position.y - (0.33f * height);
+
+			if (topEdgeofFormation > yMaxEdge) {
+				movingUp = false;
+			} else if (bottomEdgeofFormation < yMinEdge) {
+				movingUp = true;
+			}
 		}
 
 		if (AllMembersDead ()) {

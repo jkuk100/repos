@@ -22,7 +22,7 @@ public class ExtraLife: MonoBehaviour {
 	}
 
 	void ResetTime () {
-		time = Random.Range (15f, 30f);
+		time = Random.Range (12f, 20f);
 	}
 
 	public void OnCollisionEnter2D (Collision2D collision) {

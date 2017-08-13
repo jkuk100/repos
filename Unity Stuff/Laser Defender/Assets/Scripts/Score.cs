@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour {
 
-	public Text scoreText;
 	public static int score = 0;
+	static Text scoreText;
 
 	void Start () {
+		scoreText = this.GetComponent<Text> ();
 		scoreText.text = score.ToString();
 	}
 

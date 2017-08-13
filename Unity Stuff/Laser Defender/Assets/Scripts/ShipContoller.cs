@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipContoller : MonoBehaviour {
 
 	public AudioClip playerDie;
 	public AudioClip playerLaser;
-	public GameObject laserSprite;
-	public static float newX;
-	public static bool playerDead;
+	public Text ammoCountText;
+	Animator animator;
 
+	public GameObject laserSprite;
 	public GameObject life1;
 	public GameObject life2;
 	public GameObject life3;
@@ -23,17 +24,21 @@ public class ShipContoller : MonoBehaviour {
 	public Sprite playerShip6;
 	public static Sprite playerShipSprite;
 
+	public static float newX;
+	public static bool playerDead;
 	public static int playerShipInt;
 	public static int livesCounterOnShip;
+	public static float health = 300f;
+	public static int ammo;
 
 	float speed = 7f;
 	float padding = 0.5f;
 	float xMin;
 	float xMax;
-	public static float health = 300f;
 
 
 	void Start () {
+		animator = GetComponentInChildren<Animator>();
 
 		#region Sprite Changer
 		playerShipInt = Settings.playerShip;
@@ -84,6 +89,13 @@ public class ShipContoller : MonoBehaviour {
 
 		playerDead = false; // States that player is alive
 
+		ammo = 15;
+		if (Settings.hecticMode) {
+			ammoCountText.text = "Ammo: " + ammo;
+		} else {
+			ammoCountText.text = " ";
+		}
+
 		//creates screen borders
 		float distance = transform.position.z - Camera.main.transform.position.z;
 		Vector3 leftMost = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distance));
@@ -95,6 +107,11 @@ public class ShipContoller : MonoBehaviour {
 
 	//Creates instances of the player's laser
 	void FireShot () {
+		if (Settings.hecticMode && ammo > 0) {
+			ammo = ammo - 1;
+			ammoCountText.text = "Ammo: " + ammo;
+		} 
+
 		//Plays the SFX + changes pitch and pans for each shot
 		Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);
 		AudioSource.PlayClipAtPoint (playerLaser, panning, Settings.sfxVolume);
@@ -104,10 +121,14 @@ public class ShipContoller : MonoBehaviour {
 		laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 10);
 	}
 
+	public void AmmoCount () {
+		ammo = ammo + 3;
+		ammoCountText.text = "Ammo: " + ammo;
+	}
+
 	//Decreases health if ship is hit
 	void OnTriggerEnter2D (Collider2D collider) {
 		//Scripts for this method
-		Animator  animation = GetComponentInChildren<Animator>();
 		Projectile projectile = collider.gameObject.GetComponent<Projectile> ();
 
 		//Controls the health for the Main Ship and what happens when it gets hit
@@ -116,22 +137,25 @@ public class ShipContoller : MonoBehaviour {
 			health -= projectile.GetDamage ();
 			if (health == 200) {
 				life3.GetComponent<SpriteRenderer> ().enabled = false;
-				animation.Play ("PlayerLoseLife", -1, 0f);
-				animation.ResetTrigger ("PlayerLoseLife");
+				animator.Play ("PlayerLoseLife", -1, 0f);
+				animator.ResetTrigger ("PlayerLoseLife");
 			} else if (health == 100) {
 				life2.GetComponent<SpriteRenderer> ().enabled = false;
-				animation.Play ("PlayerLoseLife", -1, 0f);
+				animator.Play ("PlayerLoseLife", -1, 0f);
 			} else if (health <= 0) {
-				life1.GetComponent<SpriteRenderer> ().enabled = false;
-				animation.Play ("PlayerLost", -1, 0f);
-				Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);
-				AudioSource.PlayClipAtPoint (playerDie, panning, Settings.sfxVolume);
-
-				playerDead = true; //States that player is dead
-
-				StartCoroutine (WaitToDestroy (0.5f)); //Starts countdown to destroy object and continue level load
+				playerDead = true;
+				PlayerLost ();
 			}
 		}
+	}
+
+	void PlayerLost () {
+		life1.GetComponent<SpriteRenderer> ().enabled = false;
+		animator.Play ("PlayerLost", -1, 0f);
+		Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);
+		AudioSource.PlayClipAtPoint (playerDie, panning, Settings.sfxVolume);
+
+		StartCoroutine (WaitToDestroy (0.5f)); //Starts countdown to destroy object and continue level load
 	}
 
 	//Destroys the GameObject and loads level after set time (Ideally once SFX is done)
@@ -143,14 +167,21 @@ public class ShipContoller : MonoBehaviour {
 		health = 300;
 	}
 
-
 	void Update () {
 		//Invokes/Calls/CancelsInvoke of FireShot method depending on space bar state
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			if (playerDead == false) {
-				InvokeRepeating ("FireShot", 0.00001f, 0.3f);
+			if (ammo > 0) {
+				if (playerDead == false) {
+					InvokeRepeating ("FireShot", 0.00001f, 0.3f);
+				}
 			}
 		}
+
+		if (ammo <= 0 && playerDead == false) {
+			playerDead = true;
+			PlayerLost ();
+		}
+
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			CancelInvoke ("FireShot");
 		} 

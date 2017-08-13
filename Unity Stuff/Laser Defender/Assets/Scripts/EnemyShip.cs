@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyShip : MonoBehaviour {
 	
 	Score scoreScript;
+	ShipContoller shipController;
 
 	public AudioClip enemyShot;
 	public AudioClip enemyDie;
@@ -14,19 +15,18 @@ public class EnemyShip : MonoBehaviour {
 	public Sprite enemyShip4;
 	public Sprite enemyShip5;
 	public Sprite enemyShip6;
-
 	public GameObject laserSprite;
 
 	public float health = 200f;
 	public bool enemyFlyInState = true;
 	public bool enemyDead;
-
 	public static int enemyShipInt;
 
 	float laserSpeed = 10f;
 	float shotsPerSecond; //Frequency of laser shots
 
 	void Start () {
+
 		enemyDead = false;
 		enemyShipInt = Settings.enemyShip;
 		if (enemyShipInt == 1) {
@@ -43,10 +43,18 @@ public class EnemyShip : MonoBehaviour {
 			this.GetComponent<SpriteRenderer> ().sprite = enemyShip6;
 		}
 		
-		shotsPerSecond = Random.Range (0.1f, 0.3f);
+
+		if (Settings.hecticMode) {
+			shotsPerSecond = Random.Range (0.3f, 0.5f);
+		} else {
+			shotsPerSecond = Random.Range (0.1f, 0.3f);
+		}
+
 
 		//Sets the script to recieve the score script
 		scoreScript = FindObjectOfType<Score> ();
+		shipController = FindObjectOfType<ShipContoller> ();
+
 	}
 
 
@@ -87,6 +95,9 @@ public class EnemyShip : MonoBehaviour {
 			projectile.Hit ();
 			health -= projectile.GetDamage ();
 			if (health <= 0) {
+				if (Settings.hecticMode && ShipContoller.ammo > 0) {
+					shipController.AmmoCount ();
+				}
 				enemyDead = true;
 				GetComponent<PolygonCollider2D> ().enabled = false;
 				if (Settings.enemySmoke) {

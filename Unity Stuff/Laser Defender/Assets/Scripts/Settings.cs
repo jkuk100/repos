@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class Settings : MonoBehaviour {
 
+	//UI Components
 	public Slider sfxSlider;
 	public Slider musicSlider;
 	public Toggle hecticModeToggle;
 	public Toggle bounceModeToggle;
 	public Toggle enemyTrailsToggle;
 	public Toggle enemySmokeToggle;
+	public Dropdown songChoice;
 
 	public GameObject enemyPrefab;
 
@@ -45,13 +47,19 @@ public class Settings : MonoBehaviour {
 	public static int playerShip = 1;
 	public static int playerLaser = 1;
 	public static float sfxVolume = 1f;
-	public static float musicVolume = 1f;
+	public static float musicVolume = 0.1f;
+
+	//Additional UI States
 	public static bool hecticMode = false;
 	public static bool bounceMode = false;
 	public static bool enemyTrails = true;
 	public static bool enemySmoke = true;
+	public static int songNumber = 0;
 
 	void Start () {
+		songChoice.value = songNumber;
+		sfxSlider.value = sfxVolume;
+		musicSlider.value = musicVolume;
 		bounceModeToggle.isOn = bounceMode;
 		hecticModeToggle.isOn = hecticMode;
 		enemyTrailsToggle.isOn = enemyTrails;
@@ -60,12 +68,10 @@ public class Settings : MonoBehaviour {
 
 	public void SFXChange () {
 		sfxVolume = sfxSlider.value;
-		Debug.Log ("SFX = " + sfxVolume);
 	}
 
 	public void MusicChange () {
 		musicVolume = musicSlider.value;
-		Debug.Log ("Music = " + musicVolume);
 	}
 
 	public void SmokeState () {
@@ -74,7 +80,6 @@ public class Settings : MonoBehaviour {
 
 	public void TrailsState () {
 		enemyTrails = enemyTrailsToggle.isOn;
-		Debug.Log ("Enemy trails: " + enemyTrails);
 		if (enemyTrails == false) {
 			enemyPrefab.GetComponent<TrailRenderer> ().enabled = false;
 		} else {
@@ -84,12 +89,14 @@ public class Settings : MonoBehaviour {
 
 	public void HecticModeState() {
 		hecticMode = hecticModeToggle.isOn;
-		Debug.Log ("Hectic Mode = " + hecticMode);
 	}
 
 	public void BounceModeState() {
 		bounceMode = bounceModeToggle.isOn;
-		Debug.Log ("Bounce Mode = " + bounceMode);
+	}
+
+	public void SongCheck () {
+		songNumber = songChoice.value;
 	}
 
 	#region Sprite Check Functions

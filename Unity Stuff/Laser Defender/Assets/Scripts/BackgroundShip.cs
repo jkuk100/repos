@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BackgroundShip : MonoBehaviour {
 
+	//Sets the ship sprite to whatever toggle is enabled
 	public Sprite shipDefaultSprite;
 	public Sprite playerShip1;
 	public Sprite playerShip2;
@@ -12,6 +13,8 @@ public class BackgroundShip : MonoBehaviour {
 	public Sprite playerShip5;
 	public Sprite playerShip6;
 
+
+	//Sets the various max/min values and a bunch of bools to check things
 	private static bool movingRight = true;
 	private static bool movingUp = true;
 	private static bool ifIdle;
@@ -24,6 +27,7 @@ public class BackgroundShip : MonoBehaviour {
 	private static float width = 0.7f;
 	private static float height = 0.7f;
 
+	//Holds the values for the initial movement
 	Vector3 start;
 	Vector3 end;
 	float timeToMove;
@@ -38,9 +42,10 @@ public class BackgroundShip : MonoBehaviour {
 		timer = timeToMove;
 
 
-		//GetComponent<Animator> ().Play ("FlyUp");
 		ifIdle = false;
 
+
+		//Gets camera ratio and sets worldpoint values, sets min and max values
 		float distanceToCamera = transform.position.z - Camera.main.transform.position.z; 
 		Vector3 leftEdge = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distanceToCamera));
 		Vector3 rightEdge = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, distanceToCamera));
@@ -50,6 +55,8 @@ public class BackgroundShip : MonoBehaviour {
 		xMinEdge = leftEdge.x;
 		yMaxEdge = topEdge.y;
 		yMinEdge = bottomEdge.y;
+
+		//Calls coroutine that causes the initial movement to start when bool is set
 		StartCoroutine (WaitToLoad (5f));
 
 	}
@@ -60,6 +67,8 @@ public class BackgroundShip : MonoBehaviour {
 	}
 
 	void Update () {
+
+		//Starts the initial movement
 		if (waitDone) {
 			timer -= Time.deltaTime;
 
@@ -74,8 +83,7 @@ public class BackgroundShip : MonoBehaviour {
 		}
 
 
-		//moves formation
-		Debug.Log (ifIdle);
+		//moves the ship when bools set to true
 		if (ifIdle) {
 			if (LevelManager.currentSceneName == "Start Menu" || LevelManager.currentSceneName == "Settings" || LevelManager.currentSceneName == "Win Screen" || LevelManager.currentSceneName == "Sprite Picker") { 
 				if (movingRight) {
@@ -92,7 +100,7 @@ public class BackgroundShip : MonoBehaviour {
 			}
 		}
 
-		//controls when the formation swiches directions
+		//controls when the ship switches directions
 		if (ifIdle) {
 			float leftEdgeofFormation = transform.position.x - (0.46f * width);
 			float rightEdgeofFormation = transform.position.x + (0.46f * width);
@@ -112,6 +120,7 @@ public class BackgroundShip : MonoBehaviour {
 			}
 		}
 
+		//Changes the ship sprite when it is changed
 		if (Settings.playerShip == 1) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip1;
 		} else if (Settings.playerShip == 2) {
