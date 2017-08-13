@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BackgroundShip.cs" />
      <Compile Include="Assets\Scripts\EnemyLaser.cs" />
      <Compile Include="Assets\Scripts\EnemyShip.cs" />
      <Compile Include="Assets\Scripts\ExtraLife.cs" />
