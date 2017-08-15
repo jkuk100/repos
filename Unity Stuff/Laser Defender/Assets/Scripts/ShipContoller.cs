@@ -89,7 +89,7 @@ public class ShipContoller : MonoBehaviour {
 
 		playerDead = false; // States that player is alive
 
-		ammo = 15;
+		ammo = 20;
 		if (Settings.hecticMode) {
 			ammoCountText.text = "Ammo: " + ammo;
 		} else {
