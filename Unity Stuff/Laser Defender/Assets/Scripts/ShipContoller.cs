@@ -120,7 +120,13 @@ public class ShipContoller : MonoBehaviour {
 		//Creates each instance of a laser and sets its velocity
 		GameObject laser = Instantiate (laserSprite, transform.position, Quaternion.identity) as GameObject;
 		if (Settings.bounceMode) {
-			laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (Random.Range (-8f, 8f), Random.Range (1f, 8f));
+			if (this.gameObject.transform.position.x < 0) {
+				laser.GetComponent<Transform> ().Rotate (0, 0, 45);
+				laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (-7, 3);
+			} else {
+				laser.GetComponent<Transform> ().Rotate (0, 0, 315);
+				laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (7, 3);
+			}
 		} else {
 			laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 10);
 		}

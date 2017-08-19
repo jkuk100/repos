@@ -13,6 +13,10 @@ public class Settings : MonoBehaviour {
 	public Toggle enemyTrailsToggle;
 	public Toggle enemySmokeToggle;
 	public Dropdown songChoice;
+	public ToggleGroup enemyShipToggleGroup;
+	public ToggleGroup playerShipToggleGroup;
+	public ToggleGroup enemyLaserToggleGroup;
+	public ToggleGroup playerLaserToggleGroup;
 
 	public GameObject enemyPrefab;
 
@@ -64,6 +68,52 @@ public class Settings : MonoBehaviour {
 		hecticModeToggle.isOn = hecticMode;
 		enemyTrailsToggle.isOn = enemyTrails;
 		enemySmokeToggle.isOn = enemySmoke;
+
+		#region Toggle Group Check
+		if (enemyShip == 1) { 
+			enemyShipToggleGroup.NotifyToggleOn (enemyShip1);
+		} else if (enemyShip == 2) { 
+			enemyShipToggleGroup.NotifyToggleOn (enemyShip2);
+		} else if (enemyShip == 3) { 
+			enemyShipToggleGroup.NotifyToggleOn (enemyShip3);
+		} else if (enemyShip == 4) { 
+			enemyShipToggleGroup.NotifyToggleOn (enemyShip4);
+		} else if (enemyShip == 5) { 
+			enemyShipToggleGroup.NotifyToggleOn (enemyShip5);
+		} else if (enemyShip == 6) { 
+			enemyShipToggleGroup.NotifyToggleOn (enemyShip6);
+		}
+
+		if (playerShip == 1) {
+			playerShipToggleGroup.NotifyToggleOn (playerShip1);
+		} else if (playerShip == 2) {
+			playerShipToggleGroup.NotifyToggleOn (playerShip2);
+		} else if (playerShip == 3) {
+			playerShipToggleGroup.NotifyToggleOn (playerShip3);
+		} else if (playerShip == 4) {
+			playerShipToggleGroup.NotifyToggleOn (playerShip4);
+		} else if (playerShip == 5) {
+			playerShipToggleGroup.NotifyToggleOn (playerShip5);
+		} else if (playerShip == 6) {
+			playerShipToggleGroup.NotifyToggleOn (playerShip6);
+		}
+
+		if (enemyLaser == 1) {
+			enemyLaserToggleGroup.NotifyToggleOn (enemyLaser1);
+		} else if (enemyLaser == 2) {
+			enemyLaserToggleGroup.NotifyToggleOn (enemyLaser2);
+		} else if (enemyLaser == 3) {
+			enemyLaserToggleGroup.NotifyToggleOn (enemyLaser3);
+		}
+
+		if (playerLaser == 1) {
+			playerLaserToggleGroup.NotifyToggleOn (playerLaser1);
+		} else if (playerLaser == 2) {
+			playerLaserToggleGroup.NotifyToggleOn (playerLaser2);
+		} else if (playerLaser == 3) {
+			playerLaserToggleGroup.NotifyToggleOn (playerLaser3);
+		}
+		#endregion	
 	}
 
 	public void SFXChange () {
