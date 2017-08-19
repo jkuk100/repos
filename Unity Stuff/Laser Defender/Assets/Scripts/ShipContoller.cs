@@ -7,6 +7,7 @@ public class ShipContoller : MonoBehaviour {
 
 	public AudioClip playerDie;
 	public AudioClip playerLaser;
+	public AudioClip playerHit;
 	public Text ammoCountText;
 	Animator animator;
 
@@ -118,7 +119,11 @@ public class ShipContoller : MonoBehaviour {
 
 		//Creates each instance of a laser and sets its velocity
 		GameObject laser = Instantiate (laserSprite, transform.position, Quaternion.identity) as GameObject;
-		laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 10);
+		if (Settings.bounceMode) {
+			laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (Random.Range (-8f, 8f), Random.Range (1f, 8f));
+		} else {
+			laser.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 10);
+		}
 	}
 
 	public void AmmoCount () {
@@ -134,14 +139,17 @@ public class ShipContoller : MonoBehaviour {
 		//Controls the health for the Main Ship and what happens when it gets hit
 		if (projectile) {
 			projectile.Hit ();
+			Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);
 			health -= projectile.GetDamage ();
 			if (health == 200) {
 				life3.GetComponent<SpriteRenderer> ().enabled = false;
 				animator.Play ("PlayerLoseLife", -1, 0f);
 				animator.ResetTrigger ("PlayerLoseLife");
+				AudioSource.PlayClipAtPoint (playerHit, panning, Settings.sfxVolume);
 			} else if (health == 100) {
 				life2.GetComponent<SpriteRenderer> ().enabled = false;
 				animator.Play ("PlayerLoseLife", -1, 0f);
+				AudioSource.PlayClipAtPoint (playerHit, panning, Settings.sfxVolume);
 			} else if (health <= 0) {
 				playerDead = true;
 				PlayerLost ();

@@ -18,16 +18,17 @@ public class ExtraLifeGenerator : MonoBehaviour {
 	}
 
 	void ResetTime () {
-		time = Random.Range (5f, 10f);
+		time = Random.Range (15f, 25f);
 	}
 
 	void LifeDrop () {
 		Vector3 position = new Vector3 (Random.Range (-5f, 6.5f), 5.5f, 1);
-		GameObject lifeDrop = Instantiate (extraLifeObject, position, Quaternion.identity) as GameObject;
-		lifeDrop.GetComponent<SpriteRenderer> ().sprite = ShipContoller.playerShipSprite;
-		lifeDrop.GetComponent<BoxCollider2D> ().isTrigger = true;
-		lifeDrop.GetComponent<Rigidbody2D> ().bodyType = RigidbodyType2D.Dynamic;
-		lifeDrop.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, -2f);
+		GameObject newLife = Instantiate (extraLifeObject, position, Quaternion.identity) as GameObject;
+		newLife.GetComponent<SpriteRenderer> ().sprite = ShipContoller.playerShipSprite;
+		newLife.GetComponent<BoxCollider2D> ().isTrigger = true;
+		newLife.GetComponent<Rigidbody2D> ().bodyType = RigidbodyType2D.Dynamic;
+		newLife.GetComponent<Rigidbody2D> ().mass = 1;
+		newLife.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, -2f);
 		lifeDropped = true;
 	}
 
@@ -35,11 +36,9 @@ public class ExtraLifeGenerator : MonoBehaviour {
 		if (lifeDropped == false && ShipContoller.health < 300) {
 			if (time > 0f) {
 				time -= Time.deltaTime;
-				Debug.Log ("Before Time: " + time);
 			} else if (time <= 0) {
 				LifeDrop ();
 				ResetTime ();
-				Debug.Log (time);
 			}
 		}
 	}

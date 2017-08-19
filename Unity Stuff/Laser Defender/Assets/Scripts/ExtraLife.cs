@@ -13,7 +13,17 @@ public class ExtraLife: MonoBehaviour {
 	//Triggers health increase if health is < 300 when the life is shot
 	public void OnTriggerEnter2D (Collider2D collider) {
 		Projectile projectile = collider.gameObject.GetComponent<Projectile> ();
-		projectile.Hit ();
+		Shredder shredder = collider.gameObject.GetComponent<Shredder> ();
+
+		if (shredder) {
+			Destroy (gameObject);
+			ExtraLifeGenerator.lifeDropped = false;
+			return;
+		}
+
+		if (projectile) {
+			projectile.Hit ();
+		}
 
 		if (ShipContoller.health == 100) {
 			life2.GetComponent<SpriteRenderer> ().enabled = true;
@@ -21,7 +31,6 @@ public class ExtraLife: MonoBehaviour {
 			life3.GetComponent<SpriteRenderer> ().enabled = true;
 		} else if (ShipContoller.health == 300) {
 			Destroy (gameObject);
-			return;
 		}
 
 		Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);

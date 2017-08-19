@@ -47,7 +47,7 @@ public class Settings : MonoBehaviour {
 	public static int playerShip = 1;
 	public static int playerLaser = 1;
 	public static float sfxVolume = 1f;
-	public static float musicVolume = 0.1f;
+	public static float musicVolume = 0.75f;
 
 	//Additional UI States
 	public static bool hecticMode = false;
