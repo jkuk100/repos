@@ -69,19 +69,22 @@ public class Settings : MonoBehaviour {
 		enemyTrailsToggle.isOn = enemyTrails;
 		enemySmokeToggle.isOn = enemySmoke;
 
+
+
+
 		#region Toggle Group Check
 		if (enemyShip == 1) { 
-			enemyShipToggleGroup.NotifyToggleOn (enemyShip1);
+			//enemyShipToggleGroup.NotifyToggleOn (enemyShip1);
 		} else if (enemyShip == 2) { 
-			enemyShipToggleGroup.NotifyToggleOn (enemyShip2);
+			//enemyShipToggleGroup.NotifyToggleOn (enemyShip2);
 		} else if (enemyShip == 3) { 
-			enemyShipToggleGroup.NotifyToggleOn (enemyShip3);
+			//enemyShipToggleGroup.NotifyToggleOn (enemyShip3);
 		} else if (enemyShip == 4) { 
-			enemyShipToggleGroup.NotifyToggleOn (enemyShip4);
+			//enemyShipToggleGroup.NotifyToggleOn (enemyShip4);
 		} else if (enemyShip == 5) { 
-			enemyShipToggleGroup.NotifyToggleOn (enemyShip5);
+			//enemyShipToggleGroup.NotifyToggleOn (enemyShip5);
 		} else if (enemyShip == 6) { 
-			enemyShipToggleGroup.NotifyToggleOn (enemyShip6);
+			//enemyShipToggleGroup.NotifyToggleOn (enemyShip6);
 		}
 
 		if (playerShip == 1) {
@@ -115,6 +118,7 @@ public class Settings : MonoBehaviour {
 		}
 		#endregion	
 	}
+
 
 	public void SFXChange () {
 		sfxVolume = sfxSlider.value;
