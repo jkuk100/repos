@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FormationController : MonoBehaviour {
 
+	EnemyShip enemyship;
+
 	public GameObject enemyPreFab;
 
 	private bool movingRight = true;
@@ -32,6 +34,8 @@ public class FormationController : MonoBehaviour {
 		yMaxEdge = topEdge.y;
 		yMinEdge = bottomEdge.y;
 		SpawnUntilFull ();
+
+		enemyship = FindObjectOfType<EnemyShip> ();
 	}
 
 	//Spawns enemies
@@ -117,6 +121,8 @@ public class FormationController : MonoBehaviour {
 
 		if (AllMembersDead ()) {
 			SpawnUntilFull ();
+			EnemyShip.enemyFlyInState = true;
+			enemyship.EnemyIdle (waitTime: (4.5f));
 		}
 	}
 }

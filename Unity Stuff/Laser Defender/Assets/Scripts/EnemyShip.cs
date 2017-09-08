@@ -17,9 +17,9 @@ public class EnemyShip : MonoBehaviour {
 	public Sprite enemyShip6;
 	public GameObject laserSprite;
 
-	public float health = 200f;
-	public bool enemyFlyInState = true;
-	public bool enemyDead;
+	float health = 200f;
+	public static bool enemyFlyInState = true;
+	bool enemyDead;
 	public static int enemyShipInt;
 
 	float laserSpeed = 10f;
@@ -28,7 +28,7 @@ public class EnemyShip : MonoBehaviour {
 	void Start () {
 
 		enemyDead = false;
-		enemyShipInt = Settings.enemyShip;
+		enemyShipInt = SpritePicker.enemyShip;
 		if (enemyShipInt == 1) {
 			this.GetComponent<SpriteRenderer> ().sprite = enemyShip1;	
 		} else if (enemyShipInt == 2) {
@@ -45,9 +45,9 @@ public class EnemyShip : MonoBehaviour {
 		
 
 		if (Settings.hecticMode) {
-			shotsPerSecond = Random.Range (0.3f, 0.5f);
+			shotsPerSecond = Random.Range (0.4f, 0.5f);
 		} else {
-			shotsPerSecond = Random.Range (0.1f, 0.3f);
+			shotsPerSecond = Random.Range (0.2f, 0.3f);
 		}
 
 
@@ -55,6 +55,7 @@ public class EnemyShip : MonoBehaviour {
 		scoreScript = FindObjectOfType<Score> ();
 		shipController = FindObjectOfType<ShipContoller> ();
 
+		StartCoroutine (EnemyIdle (4.5f));
 	}
 
 
@@ -66,7 +67,13 @@ public class EnemyShip : MonoBehaviour {
 
 				//Plays the enemyShotSFX + changes pitch and pans for each shot
 				Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);
-				AudioSource.PlayClipAtPoint (enemyShot, panning, Settings.sfxVolume);
+				float volumeForEnemyShots;
+				if (Settings.sfxVolume <= 0.1f) {
+					volumeForEnemyShots = Settings.sfxVolume;
+				} else { 
+					volumeForEnemyShots = Settings.sfxVolume - 0.1f;
+				}
+				AudioSource.PlayClipAtPoint (enemyShot, panning, volumeForEnemyShots );
 
 				//Creates instances of enemy lasers and sets their velocity
 				GameObject laser = Instantiate (laserSprite, transform.position, Quaternion.identity) as GameObject;
@@ -95,7 +102,7 @@ public class EnemyShip : MonoBehaviour {
 			projectile.Hit ();
 			health -= projectile.GetDamage ();
 			if (health <= 0) {
-				if (Settings.hecticMode && ShipContoller.ammo > 0) {
+				if (Settings.hecticMode && ShipContoller.ammo >= 0) {
 					shipController.AmmoCount ();
 				}
 				enemyDead = true;
@@ -112,5 +119,11 @@ public class EnemyShip : MonoBehaviour {
 				Destroy (this.gameObject, Time.deltaTime * 50);
 			}
 		}
+	}
+
+	//Waits for the enemy to finish flying in and then allows the player and enemy to shoot
+	public IEnumerator EnemyIdle (float waitTime) {
+		yield return new WaitForSecondsRealtime (waitTime);
+		enemyFlyInState = false;
 	}
 }

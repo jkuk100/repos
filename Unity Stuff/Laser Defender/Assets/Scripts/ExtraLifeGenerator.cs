@@ -18,7 +18,11 @@ public class ExtraLifeGenerator : MonoBehaviour {
 	}
 
 	void ResetTime () {
-		time = Random.Range (15f, 25f);
+		if (Settings.hecticMode == true) {
+			time = Random.Range (15f, 20f);
+		} else {
+			time = Random.Range (8f, 13f);
+		}
 	}
 
 	void LifeDrop () {

@@ -13,7 +13,7 @@ public class EnemyLaser : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		enemyLaserInt = Settings.enemyLaser;
+		enemyLaserInt = SpritePicker.enemyLaser;
 
 		if (enemyLaserInt == 1) {
 			this.GetComponent<SpriteRenderer> ().sprite = enemyLaser1;

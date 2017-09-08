@@ -121,17 +121,17 @@ public class BackgroundShip : MonoBehaviour {
 		}
 
 		//Changes the ship sprite when it is changed
-		if (Settings.playerShip == 1) {
+		if (SpritePicker.playerShip == 1) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip1;
-		} else if (Settings.playerShip == 2) {
+		} else if (SpritePicker.playerShip == 2) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip2;
-		} else if (Settings.playerShip == 3) {
+		} else if (SpritePicker.playerShip == 3) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip3;
-		} else if (Settings.playerShip == 4) {
+		} else if (SpritePicker.playerShip == 4) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip4;
-		} else if (Settings.playerShip == 5) {
+		} else if (SpritePicker.playerShip == 5) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip5;
-		} else if (Settings.playerShip == 6) {
+		} else if (SpritePicker.playerShip == 6) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip6;
 		}
 	}

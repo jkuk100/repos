@@ -42,7 +42,7 @@ public class ShipContoller : MonoBehaviour {
 		animator = GetComponentInChildren<Animator>();
 
 		#region Sprite Changer
-		playerShipInt = Settings.playerShip;
+		playerShipInt = SpritePicker.playerShip;
 		if (playerShipInt == 1) {
 			this.GetComponent<SpriteRenderer> ().sprite = playerShip1;
 			life1.GetComponent<SpriteRenderer> ().sprite = playerShip1;
@@ -90,7 +90,7 @@ public class ShipContoller : MonoBehaviour {
 
 		playerDead = false; // States that player is alive
 
-		ammo = 20;
+		ammo = 15;
 		if (Settings.hecticMode) {
 			ammoCountText.text = "Ammo: " + ammo;
 		} else {
@@ -182,23 +182,32 @@ public class ShipContoller : MonoBehaviour {
 	}
 
 	void Update () {
-		//Invokes/Calls/CancelsInvoke of FireShot method depending on space bar state
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			if (ammo > 0) {
-				if (playerDead == false) {
-					InvokeRepeating ("FireShot", 0.00001f, 0.3f);
+		//Invokes/Calls/CancelsInvoke of FireShot method depending on space bar state and enemy state
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				if (ammo > 0) {
+					if (playerDead == false) {
+						if (EnemyShip.enemyFlyInState == false) { 
+							InvokeRepeating ("FireShot", 0.00001f, 0.3f);
+						}
+					}
 				}
 			}
+
+		//Cancels Shots when someone holds down the space bar if enemys are flying in
+		if (EnemyShip.enemyFlyInState == true) {
+			CancelInvoke ("FireShot");
 		}
 
-		if (ammo <= 0 && playerDead == false) {
-			playerDead = true;
-			PlayerLost ();
-		}
-
+		//Cancels Shots if someone lets up on the space bar
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			CancelInvoke ("FireShot");
 		} 
+
+		//Starts Lose Game sequence if someone runs out of ammo
+		if (ammo <= 0 && playerDead == false) {
+			playerDead = true;
+			StartCoroutine (PlayerLosing (0.7f));
+		}
 
 		//moves spaceship to left and right
 		if (Input.GetKey (KeyCode.RightArrow) == true) {
@@ -210,5 +219,11 @@ public class ShipContoller : MonoBehaviour {
 		//restricts gamespace
 		newX = Mathf.Clamp (transform.position.x, xMin, xMax);
 		transform.position = new Vector3 (newX, transform.position.y, transform.position.z);
+	}
+
+	IEnumerator PlayerLosing (float waitTime) {
+		yield return new WaitForSecondsRealtime (waitTime);
+		PlayerLost ();
+		//Fix issue where player loses even if they destroy enemy with their last shot
 	}
 }

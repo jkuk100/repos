@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void LoadLevel(string name){
+		EnemyShip.enemyFlyInState = true;
 		SceneManager.LoadScene (name);
 	}
 
