@@ -18,4 +18,10 @@ public class LevelManager : MonoBehaviour {
 	public void QuitRequest(){
 		Application.Quit ();
 	}
+
+	void Update () {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Application.Quit ();
+		}
+	}
 }

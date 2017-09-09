@@ -55,7 +55,7 @@ public class EnemyShip : MonoBehaviour {
 		scoreScript = FindObjectOfType<Score> ();
 		shipController = FindObjectOfType<ShipContoller> ();
 
-		StartCoroutine (EnemyIdle (4.5f));
+		StartCoroutine (EnemyIdle (5f));
 	}
 
 
@@ -68,6 +68,7 @@ public class EnemyShip : MonoBehaviour {
 				//Plays the enemyShotSFX + changes pitch and pans for each shot
 				Vector3 panning = new Vector3 ((transform.position.x / 6.1f), transform.position.y, transform.position.z);
 				float volumeForEnemyShots;
+				//Lowers the volume a bit more if it is too loud (enemy shot sounded louder, so this is how I tried to mix it)
 				if (Settings.sfxVolume <= 0.1f) {
 					volumeForEnemyShots = Settings.sfxVolume;
 				} else { 

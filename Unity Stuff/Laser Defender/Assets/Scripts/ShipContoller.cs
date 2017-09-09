@@ -31,6 +31,7 @@ public class ShipContoller : MonoBehaviour {
 	public static int livesCounterOnShip;
 	public static float health = 300f;
 	public static int ammo;
+	static bool coroutineIsRunning = false;
 
 	float speed = 7f;
 	float padding = 0.5f;
@@ -163,6 +164,7 @@ public class ShipContoller : MonoBehaviour {
 		}
 	}
 
+	//What occurs when player loses (sfx, animation, starts coroutine that destroys gameobject
 	void PlayerLost () {
 		life1.GetComponent<SpriteRenderer> ().enabled = false;
 		animator.Play ("PlayerLost", -1, 0f);
@@ -207,6 +209,15 @@ public class ShipContoller : MonoBehaviour {
 		if (ammo <= 0 && playerDead == false) {
 			playerDead = true;
 			StartCoroutine (PlayerLosing (0.7f));
+			coroutineIsRunning = true;
+		} 
+
+		//Stops PLayerLosing Coroutine/Doesn't let PlayerLost run if player gains ammo after last shot
+		if (coroutineIsRunning == true)	{
+			if (ammo > 0) {
+				playerDead = false;
+				coroutineIsRunning = false;
+			}
 		}
 
 		//moves spaceship to left and right
@@ -221,9 +232,11 @@ public class ShipContoller : MonoBehaviour {
 		transform.position = new Vector3 (newX, transform.position.y, transform.position.z);
 	}
 
+	//Calls PlayerLost if they lost all their ammo
 	IEnumerator PlayerLosing (float waitTime) {
 		yield return new WaitForSecondsRealtime (waitTime);
-		PlayerLost ();
-		//Fix issue where player loses even if they destroy enemy with their last shot
+		if (coroutineIsRunning == true) {
+			PlayerLost ();
+		}
 	}
 }
